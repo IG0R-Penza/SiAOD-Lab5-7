@@ -14,7 +14,7 @@ namespace lab5_7
     public partial class Form1 : Form
     {
         private const int N = 100000000;
-        private int[] Array = new int[N+1];
+        private int[] Array = new int[N + 1];
         private const int CYCLES = 4000000;
         private const int CYCLES_ORDERED = 100;
         public Form1()
@@ -30,7 +30,7 @@ namespace lab5_7
         private void Form1_Load(object sender, EventArgs e)
         {
             Random rnd = new Random();
-            
+
             //наполнение упорядоченного массива
             int OrderedElem = 0;
             for (int i = 0; i < N; i++)
@@ -105,7 +105,41 @@ namespace lab5_7
 
                 OptimalTime.Text = ResultTime.ToString();
             }
-            
+
+            // интерполяционный поиск
+            {
+                long Index = -1;
+                long LeftBoder;
+                long RightBoder;
+                long i;
+
+                int StartTime = Environment.TickCount;
+                for (int cycle = 0; cycle < CYCLES; cycle++)
+                {
+                    LeftBoder = 0;
+                    RightBoder = N - 1;
+                    while (Array[LeftBoder] < Key && Key < Array[RightBoder])
+                    {
+                        i = LeftBoder + (Key - Array[LeftBoder]) * (RightBoder - LeftBoder) / (Array[RightBoder] - Array[LeftBoder]);
+                        if (Key == Array[i])
+                        {
+                            Index = i;
+                            break;
+                        }
+                        if (Key < Array[i]) RightBoder = i - 1;
+                        else LeftBoder = i + 1;
+                    }
+                    if (Key == Array[LeftBoder]) Index = LeftBoder;
+                    else if (Key == Array[RightBoder]) Index = RightBoder;
+                }
+                int ResultTime = Environment.TickCount - StartTime;
+
+                if (Index != -1) InterpolationIndex.Text = Index.ToString();
+                else InterpolationIndex.Text = "Не найдено";
+
+                InterpolationTime.Text = ResultTime.ToString();
+            }
+
             //алг D (последовательный бинарный поиск)
             {
                 int Index = -1;
@@ -129,7 +163,7 @@ namespace lab5_7
 
                 SequentialTime.Text = ResultTime.ToString();
             }
-            
+
             //последовательный поиск
             {
                 int Index = 0;
@@ -146,6 +180,7 @@ namespace lab5_7
                 else SequentialInOrderedIndex.Text = "Не найдено";
 
                 SequentialInOrderedTime.Text = ResultTime.ToString();
+            }
         }
     }
 }
