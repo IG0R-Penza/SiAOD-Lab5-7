@@ -22,6 +22,39 @@ namespace lab5_7
             InitializeComponent();
         }
 
+        private void UnoptimalSearch(int Key)
+        {
+            int Index = -1;
+
+            int LeftBoder;
+            int RightBoder;
+            int i;
+
+            int StartTime = Environment.TickCount;
+            for (int cycle = 0; cycle < CYCLES; cycle++)
+            {
+                LeftBoder = 0;
+                RightBoder = N - 1;
+                while (RightBoder >= LeftBoder)
+                {
+                    i = (LeftBoder + RightBoder) / 2;
+                    if (Key == Array[i])
+                    {
+                        Index = i;
+                        break;
+                    }
+                    if (Key < Array[i]) RightBoder = i - 1;
+                    else LeftBoder = i + 1;
+                }
+            }
+            int ResultTime = Environment.TickCount - StartTime;
+
+            if (Index != -1) UnoptimalIndex.Text = Index.ToString();
+            else UnoptimalIndex.Text = "Не найдено";
+
+            UnoptimalTime.Text = ResultTime.ToString();
+        }
+
         private void ExitButton_Click(object sender, EventArgs e)
         {
             Close();
@@ -43,8 +76,7 @@ namespace lab5_7
         private void SearchButton_Click(object sender, EventArgs e)
         {
             int Key = Decimal.ToInt32(KeyUD.Value);
-
-            
+            UnoptimalSearch(Key);
         }
     }
 }
