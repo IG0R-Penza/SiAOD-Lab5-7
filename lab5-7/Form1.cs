@@ -106,6 +106,30 @@ namespace lab5_7
                 OptimalTime.Text = ResultTime.ToString();
             }
             
+            //алг D (последовательный бинарный поиск)
+            {
+                int Index = -1;
+                int StartTime = Environment.TickCount;
+                for (int cycle = 0; cycle < CYCLES; cycle++)
+                {
+
+                    int CurrentPosition = 0;
+                    int JumpLength = N / 2;
+                    while (JumpLength > 0)
+                    {
+                        while (CurrentPosition + JumpLength < N && Array[CurrentPosition + JumpLength] <= Key) CurrentPosition += JumpLength;
+                        JumpLength /= 2;
+                    }
+                    if (Array[CurrentPosition] == Key) Index = CurrentPosition;
+                }
+                int ResultTime = Environment.TickCount - StartTime;
+
+                if (Index != -1) SequentialIndex.Text = Index.ToString();
+                else SequentialIndex.Text = "Не найдено";
+
+                SequentialTime.Text = ResultTime.ToString();
+            }
+            
             //последовательный поиск
             {
                 int Index = 0;
