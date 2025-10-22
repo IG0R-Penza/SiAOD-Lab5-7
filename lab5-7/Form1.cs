@@ -44,7 +44,23 @@ namespace lab5_7
         {
             int Key = Decimal.ToInt32(KeyUD.Value);
 
-            
+            //последовательный поиск
+            {
+                int Index = 0;
+                int StartTime = Environment.TickCount;
+                Array[N] = Key + 1;
+                for (int cycle = 0; cycle < CYCLES_ORDERED; cycle++)
+                {
+                    Index = 0;
+                    while (Key > Array[Index]) Index++;
+                }
+                int ResultTime = (Environment.TickCount - StartTime) * (CYCLES / CYCLES_ORDERED);
+
+                if (Key == Array[Index]) SequentialInOrderedIndex.Text = Index.ToString();
+                else SequentialInOrderedIndex.Text = "Не найдено";
+
+                SequentialInOrderedTime.Text = ResultTime.ToString();
+            }
         }
     }
 }
