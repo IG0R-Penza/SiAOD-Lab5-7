@@ -44,22 +44,28 @@ namespace lab5_7
         {
             int Key = Decimal.ToInt32(KeyUD.Value);
 
-            //последовательный поиск
+            //алг D (последовательный бинарный поиск)
             {
-                int Index = 0;
+                int Index = -1;
                 int StartTime = Environment.TickCount;
-                Array[N] = Key + 1;
-                for (int cycle = 0; cycle < CYCLES_ORDERED; cycle++)
+                for (int cycle = 0; cycle < CYCLES; cycle++)
                 {
-                    Index = 0;
-                    while (Key > Array[Index]) Index++;
+
+                    int CurrentPosition = 0;
+                    int JumpLength = N / 2;
+                    while (JumpLength > 0)
+                    {
+                        while (CurrentPosition + JumpLength < N && Array[CurrentPosition + JumpLength] <= Key) CurrentPosition += JumpLength;
+                        JumpLength /= 2;
+                    }
+                    if (Array[CurrentPosition] == Key) Index = CurrentPosition;
                 }
-                int ResultTime = (Environment.TickCount - StartTime) * (CYCLES / CYCLES_ORDERED);
+                int ResultTime = Environment.TickCount - StartTime;
 
-                if (Key == Array[Index]) SequentialInOrderedIndex.Text = Index.ToString();
-                else SequentialInOrderedIndex.Text = "Не найдено";
+                if (Index != -1) SequentialIndex.Text = Index.ToString();
+                else SequentialIndex.Text = "Не найдено";
 
-                SequentialInOrderedTime.Text = ResultTime.ToString();
+                SequentialTime.Text = ResultTime.ToString();
             }
         }
     }
