@@ -44,6 +44,68 @@ namespace lab5_7
         {
             int Key = Decimal.ToInt32(KeyUD.Value);
 
+            // Неоптимальный поиск
+            {
+                int Index = -1;
+
+                int LeftBoder;
+                int RightBoder;
+                int i;
+
+                int StartTime = Environment.TickCount;
+                for (int cycle = 0; cycle < CYCLES; cycle++)
+                {
+                    LeftBoder = 0;
+                    RightBoder = N - 1;
+                    while (RightBoder >= LeftBoder)
+                    {
+                        i = (LeftBoder + RightBoder) / 2;
+                        if (Key == Array[i])
+                        {
+                            Index = i;
+                            break;
+                        }
+                        if (Key < Array[i]) RightBoder = i - 1;
+                        else LeftBoder = i + 1;
+                    }
+                }
+                int ResultTime = Environment.TickCount - StartTime;
+
+                if (Index != -1) UnoptimalIndex.Text = Index.ToString();
+                else UnoptimalIndex.Text = "Не найдено";
+
+                UnoptimalTime.Text = ResultTime.ToString();
+            }
+
+            // Оптимальный поиск
+            {
+                int Index = -1;
+
+                int LeftBoder;
+                int RightBoder;
+                int i;
+
+                int StartTime = Environment.TickCount;
+                for (int cycle = 0; cycle < CYCLES; cycle++)
+                {
+                    LeftBoder = 0;
+                    RightBoder = N - 1;
+                    while (RightBoder > LeftBoder)
+                    {
+                        i = (LeftBoder + RightBoder) / 2;
+                        if (Key <= Array[i]) RightBoder = i;
+                        else LeftBoder = i + 1;
+                    }
+                    if (Key == Array[RightBoder]) Index = RightBoder;
+                }
+                int ResultTime = Environment.TickCount - StartTime;
+
+                if (Index != -1) OptimalIndex.Text = Index.ToString();
+                else OptimalIndex.Text = "Не найдено";
+
+                OptimalTime.Text = ResultTime.ToString();
+            }
+            
             //алг D (последовательный бинарный поиск)
             {
                 int Index = -1;
@@ -67,6 +129,23 @@ namespace lab5_7
 
                 SequentialTime.Text = ResultTime.ToString();
             }
+            
+            //последовательный поиск
+            {
+                int Index = 0;
+                int StartTime = Environment.TickCount;
+                Array[N] = Key + 1;
+                for (int cycle = 0; cycle < CYCLES_ORDERED; cycle++)
+                {
+                    Index = 0;
+                    while (Key > Array[Index]) Index++;
+                }
+                int ResultTime = (Environment.TickCount - StartTime) * (CYCLES / CYCLES_ORDERED);
+
+                if (Key == Array[Index]) SequentialInOrderedIndex.Text = Index.ToString();
+                else SequentialInOrderedIndex.Text = "Не найдено";
+
+                SequentialInOrderedTime.Text = ResultTime.ToString();
         }
     }
 }
