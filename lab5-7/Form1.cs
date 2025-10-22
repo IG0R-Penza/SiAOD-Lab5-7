@@ -44,6 +44,7 @@ namespace lab5_7
         {
             int Key = Decimal.ToInt32(KeyUD.Value);
 
+            // неоптимальный бинарный поиск
             {
                 int Index = -1;
 
